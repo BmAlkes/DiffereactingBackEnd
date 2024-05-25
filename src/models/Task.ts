@@ -18,7 +18,7 @@ export interface ITask extends Document {
 
 const TaskSchema: Schema = new Schema(
   {
-    projectName: {
+    taskName: {
       type: String,
       required: true,
       trim: true,
