@@ -3,6 +3,7 @@ import { ProjectController } from "../controllers/ProjectController";
 import { body, param } from "express-validator";
 import { handleInputErros } from "../middlewares/validation";
 import { TaskController } from "../controllers/TaskController";
+import { validateProjectExists } from "../middlewares/project";
 
 const router = Router();
 
@@ -35,6 +36,74 @@ router.delete("/:id", ProjectController.deleteProject);
 
 // Routes  for Tasks
 
-router.post("/:projectId/tasks", TaskController.createTask);
+router.param("projectId", validateProjectExists);
+
+router.put(
+  "/:projectId",
+  param("projectId").isMongoId().withMessage("ID no válido"),
+  body("projectName")
+    .notEmpty()
+    .withMessage("El Nombre del Proyecto es Obligatorio"),
+  body("clientName")
+    .notEmpty()
+    .withMessage("El Nombre del Cliente es Obligatorio"),
+  body("description")
+    .notEmpty()
+    .withMessage("La Descripción del Proyecto es Obligatoria"),
+  handleInputErros,
+
+  ProjectController.updatedProject
+);
+
+router.delete(
+  "/:projectId",
+  param("projectId").isMongoId().withMessage("ID no válido"),
+  handleInputErros,
+
+  ProjectController.deleteProject
+);
+
+router.post(
+  "/:projectId/tasks",
+
+  body("taskName").notEmpty().withMessage("El Nombre de la tarea es Obligatorio"),
+  body("description")
+    .notEmpty()
+    .withMessage("La descripción de la tarea es obligatoria"),
+  handleInputErros,
+  TaskController.createTask
+);
+
+router.get("/:projectId/tasks", TaskController.getProjectTasks);
+
+// router.param('taskId',"" )
+// router.param('taskId',"")
+
+router.get(
+  "/:projectId/tasks/:taskId",
+  param("taskId").isMongoId().withMessage("ID no válido"),
+  handleInputErros,
+  TaskController.getTaskById
+);
+
+router.put(
+  "/:projectId/tasks/:taskId",
+
+  param("taskId").isMongoId().withMessage("ID no válido"),
+  body("name").notEmpty().withMessage("El Nombre de la tarea es Obligatorio"),
+  body("description")
+    .notEmpty()
+    .withMessage("La descripción de la tarea es obligatoria"),
+  handleInputErros,
+  TaskController.updateTask
+);
+
+router.delete(
+  "/:projectId/tasks/:taskId",
+
+  param("taskId").isMongoId().withMessage("ID no válido"),
+  handleInputErros,
+  TaskController.deleteTask
+);
 
 export default router;

@@ -49,8 +49,11 @@ export class ProjectController {
   };
   static createProject = async (req: Request, res: Response) => {
     const project = new Project(req.body);
+    console.log(project);
+
     try {
       await project.save();
+
       res.send("Project Created Success");
     } catch (error) {
       console.log(error);

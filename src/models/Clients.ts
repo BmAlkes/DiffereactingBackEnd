@@ -1,13 +1,13 @@
 import mongoose, { Document, PopulatedDoc, Schema, Types } from "mongoose";
-import Project, { IProject } from "./Project";
+import { IProject } from "./Project";
 
 export interface IClients extends Document {
   clientName: string;
   phone: string;
   email: string;
   bankHours: string;
-  descriptions: string;
-  project: PopulatedDoc<IProject & Document>;
+  description: string;
+  project: PopulatedDoc<IProject & Document>[];
 }
 
 const ClientSchema: Schema = new Schema(
@@ -21,7 +21,7 @@ const ClientSchema: Schema = new Schema(
     email: { type: String, require: true, trim: true },
     bankHours: { type: String, require: true, trim: true },
     description: { type: String, require: true, trim: true },
-    project: { type: Types.ObjectId, ref: "Project" },
+    project: [{ type: Types.ObjectId, ref: "Project" }],
   },
   { timestamps: true }
 );
