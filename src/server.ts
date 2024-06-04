@@ -3,10 +3,15 @@ import dotenv from "dotenv";
 import { connectToDatabase } from "./database/mongoose.database";
 import projectRoutes from "./routes/projectRoutes";
 import clientRoutes from "./routes/clientProject";
+import cors from "cors";
+import { corsConfig } from "./cors";
 
 dotenv.config();
 connectToDatabase();
+
 const app = express();
+app.use(cors(corsConfig));
+
 app.use(express.json());
 
 //routes

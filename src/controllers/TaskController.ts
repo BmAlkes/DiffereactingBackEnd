@@ -61,10 +61,28 @@ export class TaskController {
       req.project.tasks = req.project.tasks.filter(
         (task) => task.toString() !== taskId
       );
-      await Promise.allSettled([task.deleteOne(),req.project.save()])
+      await Promise.allSettled([task.deleteOne(), req.project.save()]);
       return res.send("task Deleted");
     } catch (error) {
       res.status(500).json({ error: "Had a error" });
+    }
+  };
+
+  static updateStatus = async (req: Request, res: Response) => {
+    try {
+      const {taskId}=req.params;
+      const task = await Task.findById(taskId);
+      if (!task) {
+        return res.status(404).json({ error: "Task not found" });
+      }
+      const {status} =req.body;
+      task.status = status
+
+      await task.save();
+      res.send("Task Update Success")
+      
+    } catch (error) {
+      res.status(500).json({ error: error.message });
     }
   };
 }

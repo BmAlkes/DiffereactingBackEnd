@@ -5,11 +5,17 @@ export interface IProject extends Document {
   projectName: string;
   description: string;
   tasks: PopulatedDoc<ITask & Document>[];
+  client: Types.ObjectId;
 }
 
 const ProjectSchema: Schema = new Schema(
   {
     projectName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    clientName: {
       type: String,
       required: true,
       trim: true,
