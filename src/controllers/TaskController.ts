@@ -13,6 +13,7 @@ export class TaskController {
       res.status(500).json({ error: err.message });
     }
   };
+
   static getProjectTasks = async (req: Request, res: Response) => {
     try {
       const tasks = await Task.find({ project: req.project.id }).populate(
@@ -70,17 +71,16 @@ export class TaskController {
 
   static updateStatus = async (req: Request, res: Response) => {
     try {
-      const {taskId}=req.params;
+      const { taskId } = req.params;
       const task = await Task.findById(taskId);
       if (!task) {
         return res.status(404).json({ error: "Task not found" });
       }
-      const {status} =req.body;
-      task.status = status
+      const { status } = req.body;
+      task.status = status;
 
       await task.save();
-      res.send("Task Update Success")
-      
+      res.send("Task Update Success");
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
