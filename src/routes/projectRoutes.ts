@@ -5,8 +5,11 @@ import { handleInputErros } from "../middlewares/validation";
 import { TaskController } from "../controllers/TaskController";
 import { projectExists } from "../middlewares/project";
 import { taskExists } from "../middlewares/task";
+import { authetication } from "../middlewares/auth";
 
 const router = Router();
+
+router.use(authetication);
 
 router.post(
   "/",
@@ -67,7 +70,9 @@ router.delete(
 router.post(
   "/:projectId/tasks",
 
-  body("taskName").notEmpty().withMessage("El Nombre de la tarea es Obligatorio"),
+  body("taskName")
+    .notEmpty()
+    .withMessage("El Nombre de la tarea es Obligatorio"),
   body("description")
     .notEmpty()
     .withMessage("La descripción de la tarea es obligatoria"),
@@ -77,7 +82,7 @@ router.post(
 
 router.get("/:projectId/tasks", TaskController.getProjectTasks);
 
-router.param('taskId',taskExists )
+router.param("taskId", taskExists);
 // router.param('taskId',"")
 
 router.get(
@@ -101,11 +106,12 @@ router.delete(
   TaskController.deleteTask
 );
 
-router.post("/:projectId/tasks/:taskId/status",
+router.post(
+  "/:projectId/tasks/:taskId/status",
   param("taskId").isMongoId().withMessage("ID not valid"),
-  body("status").notEmpty().withMessage('State is required'),
+  body("status").notEmpty().withMessage("State is required"),
   handleInputErros,
-TaskController.updateStatus
-)
+  TaskController.updateStatus
+);
 
 export default router;

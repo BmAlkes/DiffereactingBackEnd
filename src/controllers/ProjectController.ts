@@ -3,9 +3,19 @@ import Project from "../models/Project";
 
 export class ProjectController {
   static getAllProjects = async (req: Request, res: Response) => {
+    const PAGE_SIZE = 6;
     try {
-      const projects = await Project.find({}).populate("tasks");
-      res.json(projects);
+      const totalProjects = await Project.find();
+      const { page } = req.query;
+      const projects = await Project.find({}, null, {
+        skip: Number(page) * PAGE_SIZE,
+        limit: PAGE_SIZE,
+      }).sort();
+      const totalPage = Math.floor(totalProjects.length / PAGE_SIZE);
+      res.json({
+        totalPage,
+        data: projects,
+      });
     } catch (error) {
       console.log(error);
       res.status(500).send("Server error");
@@ -62,8 +72,6 @@ export class ProjectController {
 
   static createProject = async (req: Request, res: Response) => {
     const project = new Project(req.body);
-    console.log(project);
-
     try {
       await project.save();
       res.send("Project Created Successfully");

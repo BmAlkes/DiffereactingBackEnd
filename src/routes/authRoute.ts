@@ -2,6 +2,7 @@ import { Router } from "express";
 import { AuthController } from "../controllers/AuthControlle";
 import { body, param } from "express-validator";
 import { handleInputErros } from "../middlewares/validation";
+import { authetication } from "../middlewares/auth";
 
 const router = Router();
 
@@ -59,18 +60,55 @@ router.post(
 );
 router.post(
   "/update-password/:token",
-  param('token').isNumeric().withMessage('Invalid token'),
+  param("token").isNumeric().withMessage("Invalid token"),
   body("password")
-  .isLength({ min: 8 })
-  .withMessage("Password can be less than 8 characters"),
-body("password_confirmation").custom((value, { req }) => {
-  if (value !== req.body.password) {
-    throw new Error("The passwords dont match");
-  }
-  return true;
-}),
+    .isLength({ min: 8 })
+    .withMessage("Password can be less than 8 characters"),
+  body("password_confirmation").custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error("The passwords dont match");
+    }
+    return true;
+  }),
   handleInputErros,
   AuthController.updatePasswordWithToken
 );
+
+router.get("/user", authetication, AuthController.user);
+
+//Profile
+
+router.put(
+  "/profile",
+  authetication,
+  body("name").notEmpty().withMessage("Name can not be empty"),
+  body("email").isEmail().withMessage("Email not valid"),
+  handleInputErros,
+  AuthController.updateProfile
+);
+
+router.post(
+  "/update-password",
+  authetication,
+  body("current_password")
+    .isLength({ min: 8 })
+    .withMessage("Password can be less than 8 characters"),
+  body("password_confirmation").custom((value, { req }) => {
+    if (value !== req.body.password) {
+      throw new Error("The passwords dont match");
+    }
+    return true;
+  }),
+  handleInputErros,
+  AuthController.updateCurrentUserPassword
+);
+
+router.post('/check-password',
+  authetication,
+  body('password')
+      .notEmpty().withMessage('El password no puede ir vacio'),
+  handleInputErros,
+  AuthController.checkPassword
+)
 
 export default router;

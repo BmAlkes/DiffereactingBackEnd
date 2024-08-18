@@ -14,6 +14,10 @@ export interface ITask extends Document {
   description: string;
   project: Types.ObjectId;
   status: TaskStatus;
+  priority: string;
+  deadline: string;
+  image: string;
+  alt: string;
 }
 
 const TaskSchema: Schema = new Schema(
@@ -36,6 +40,19 @@ const TaskSchema: Schema = new Schema(
       type: String,
       enum: Object.values(taskStatus),
       default: taskStatus.PENDING,
+    },
+    priority: {
+      type: String,
+      trim: true,
+    },
+    deadline: {
+      type: String,
+    },
+    image: {
+      type: String,
+    },
+    alt: {
+      type: String,
     },
   },
   { timestamps: true }
