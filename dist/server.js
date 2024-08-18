@@ -15,6 +15,12 @@ dotenv_1.default.config();
 (0, mongoose_database_1.connectToDatabase)();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
+app.use((req, res, next) => {
+    res.header("Acess-Control-Allow-Methods", "*");
+    res.header("Acess-Control-Allow-Headers", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
+    res.header("Acess-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next();
+});
 app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 //routes

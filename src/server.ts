@@ -13,6 +13,12 @@ connectToDatabase();
 
 const app = express();
 app.use(cors());
+app.use((req,res,next)=>{
+    res.header("Acess-Control-Allow-Methods","*");
+    res.header("Acess-Control-Allow-Headers","GET,HEAD,OPTIONS,POST,PUT,DELETE");
+    res.header("Acess-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    next()
+})
 
 app.use(morgan("dev"));
 app.use(express.json());
