@@ -12,7 +12,7 @@ dotenv.config();
 connectToDatabase();
 
 const app = express();
-app.use(cors({origin:"https://www.differeacting.com/"}));
+app.use(cors());
 
 app.use(morgan("dev"));
 app.use(express.json());
