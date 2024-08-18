@@ -51,6 +51,8 @@ const TaskSchema: Schema = new Schema(
     },
     assignedtask:{
       type: String,
+      trim: true,
+      required:true
     },
     image: {
       type: String,
