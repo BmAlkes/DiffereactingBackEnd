@@ -6,7 +6,7 @@ import clientRoutes from "./routes/clientProject";
 import authRoutes from "./routes/authRoute";
 import cors from "cors";
 import morgan from "morgan";
-import configCors from '../src/default'
+
 
 dotenv.config();
 connectToDatabase();
