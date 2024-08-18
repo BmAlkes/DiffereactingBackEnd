@@ -18,6 +18,7 @@ export interface ITask extends Document {
   deadline: string;
   image: string;
   alt: string;
+  assignedTask:string
 }
 
 const TaskSchema: Schema = new Schema(
@@ -52,6 +53,9 @@ const TaskSchema: Schema = new Schema(
       type: String,
     },
     alt: {
+      type: String,
+    },
+    assignedTask: {
       type: String,
     },
   },
