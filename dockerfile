@@ -1,20 +1,15 @@
-# Specify base image
-FROM node:18-alpine
+bashCopy code
+# Use the official Node.js image as the base image
+FROM node:18
 
-# Specify working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy the application files into the working directory
+COPY . /app
 
-# Install dependencies
+# Install the application dependencies
 RUN npm install
 
-# Copy source code
-COPY . .
-
-# Expose port 8080
-EXPOSE 8080
-
-# Run the app
+# Define the entry point for the container
 CMD ["npm", "start"]
