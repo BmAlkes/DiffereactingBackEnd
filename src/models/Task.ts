@@ -10,15 +10,15 @@ const taskStatus = {
 export type TaskStatus = (typeof taskStatus)[keyof typeof taskStatus];
 
 export interface ITask extends Document {
-  name: string;
+  taskName: string;
   description: string;
   project: Types.ObjectId;
   status: TaskStatus;
   priority: string;
   deadline: string;
+  assignedtask:string;
   image: string;
   alt: string;
-  assignedTask:string
 }
 
 const TaskSchema: Schema = new Schema(
@@ -49,15 +49,15 @@ const TaskSchema: Schema = new Schema(
     deadline: {
       type: String,
     },
+    assignedtask:{
+      type: String,
+    },
     image: {
       type: String,
     },
     alt: {
       type: String,
-    },
-    assignedTask: {
-      type: String,
-    },
+    }, 
   },
   { timestamps: true }
 );
