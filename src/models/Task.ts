@@ -49,11 +49,6 @@ const TaskSchema: Schema = new Schema(
     deadline: {
       type: String,
     },
-    assignedTask: {
-      type: String,
-      trim: true,
-      required:true
-    },
     image: {
       type: String,
     },

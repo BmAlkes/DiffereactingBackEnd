@@ -69,7 +69,6 @@ router.delete(
 
 router.post(
   "/:projectId/tasks",
-  body('assignedTask').notEmpty().withMessage("assignedtask is required"),
   handleInputErros,
   TaskController.createTask
 );
