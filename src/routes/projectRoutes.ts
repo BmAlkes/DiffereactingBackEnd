@@ -76,6 +76,7 @@ router.post(
   body("description")
     .notEmpty()
     .withMessage("La descripción de la tarea es obligatoria"),
+  body("assignedtask").notEmpty().withMessage("Assigned task is required"),
   handleInputErros,
   TaskController.createTask
 );

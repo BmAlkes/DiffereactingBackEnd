@@ -4,7 +4,9 @@ import Task from "../models/Task";
 export class TaskController {
   static createTask = async (req: Request, res: Response) => {
     try {
+      
       const task = new Task(req.body);
+      console.log(task);
       task.project = req.project.id;
       req.project.tasks.push(task.id);
       Promise.allSettled([task.save(), req.project.save()]);
