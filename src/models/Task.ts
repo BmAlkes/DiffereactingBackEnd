@@ -16,7 +16,7 @@ export interface ITask extends Document {
   status: TaskStatus;
   priority: string;
   deadline: string;
-  assignedtask:string;
+  assignedTask: string;
   image: string;
   alt: string;
 }
@@ -49,17 +49,17 @@ const TaskSchema: Schema = new Schema(
     deadline: {
       type: String,
     },
-    assignedtask:{
+    assignedTask: {
       type: String,
+      required: true,
       trim: true,
-      required:true
     },
     image: {
       type: String,
     },
     alt: {
       type: String,
-    }, 
+    },
   },
   { timestamps: true }
 );
