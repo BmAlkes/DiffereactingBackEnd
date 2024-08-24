@@ -50,6 +50,12 @@ const ProjectSchema = new mongoose_1.Schema({
         type: mongoose_1.Types.ObjectId,
         ref: "User",
     },
+    team: [
+        {
+            type: mongoose_1.Types.ObjectId,
+            ref: "User",
+        },
+    ],
 }, {
     timestamps: true,
 });

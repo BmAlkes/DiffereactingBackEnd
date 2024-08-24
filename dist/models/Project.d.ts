@@ -32,6 +32,7 @@ export interface IProject extends Document {
     tasks: PopulatedDoc<ITask & Document>[];
     client: Types.ObjectId;
     manager: PopulatedDoc<IUser & Document>;
+    team: PopulatedDoc<IUser & Document>[];
 }
 declare const Project: mongoose.Model<IProject, {}, {}, {}, mongoose.Document<unknown, {}, IProject> & IProject & Required<{
     _id: unknown;
