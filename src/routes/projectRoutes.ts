@@ -111,7 +111,7 @@ router.post(
 
 // Routes for Team
 
-router.post('/:projectId/team',body("email").isEmail().toLowerCase().withMessage("Email is not valid"),handleInputErros, TeamMemberController.findMemberByEmail)
+router.post('/:projectId/team/find',body("email").isEmail().toLowerCase().withMessage("Email is not valid"),handleInputErros, TeamMemberController.findMemberByEmail)
 
 router.get('/:projectId/team', TeamMemberController.getProjectTeam)
 
