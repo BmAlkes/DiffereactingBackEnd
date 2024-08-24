@@ -9,15 +9,16 @@ export class TeamMemberController {
     const user = await User.findOne({ email: email }).select("id email name");
     if (!user) {
       const error = new Error(`User ${email} not found`);
-      return res.status(404).send(error.message);
+      return res.status(409).json({ error: error.message });
     }
     res.json(user);
   };
 
   static getProjectTeam = async (req: Request, res: Response) => {
-    const project = await Project.findById(req.project.id).populate({path:'team',
-        select:'id email name'
-    })
+    const project = await Project.findById(req.project.id).populate({
+      path: "team",
+      select: "id email name",
+    });
 
     res.json(project.team);
   };
