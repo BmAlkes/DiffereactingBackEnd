@@ -7,6 +7,7 @@ import { projectExists } from "../middlewares/project";
 import { taskExists } from "../middlewares/task";
 import { authetication } from "../middlewares/auth";
 import { TeamMemberController } from "../controllers/TeamController";
+import { upload } from "../utils/fileUpload";
 
 const router = Router();
 
@@ -45,6 +46,7 @@ router.param("projectId", projectExists);
 
 router.put(
   "/:projectId",
+  upload.single("image"),
   param("projectId").isMongoId().withMessage("ID no válido"),
   body("projectName")
     .notEmpty()
@@ -70,6 +72,7 @@ router.delete(
 
 router.post(
   "/:projectId/tasks",
+  upload.single("image"),
   handleInputErros,
   TaskController.createTask
 );
@@ -118,7 +121,7 @@ router.get('/:projectId/team', TeamMemberController.getProjectTeam)
 
 router.post('/:projectId/team',body('id').isMongoId().withMessage("ID Not Valid"), handleInputErros, TeamMemberController.addMemberById)
 
-router.delete('/:projectId/team',body('id').isMongoId().withMessage("ID Not Valid"), handleInputErros, TeamMemberController.removeMemberById)
+router.delete('/:projectId/team/:userId',param('userId').isMongoId().withMessage("ID Not Valid"), handleInputErros, TeamMemberController.removeMemberById)
 
 
 

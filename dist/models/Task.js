@@ -59,7 +59,8 @@ const TaskSchema = new mongoose_1.Schema({
         type: String,
     },
     image: {
-        type: String,
+        type: Object,
+        default: {}
     },
     alt: {
         type: String,

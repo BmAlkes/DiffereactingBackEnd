@@ -1,15 +1,46 @@
 import type { Request, Response } from "express";
 import Task from "../models/Task";
+import { fileSizeFormatter } from "../utils/fileUpload";
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: "landingpage2",
+  api_key: "959475658351858",
+  api_secret: "AR-ajbZhd7C9lidxIH-5aiLitpw",
+});
 
 export class TaskController {
   static createTask = async (req: Request, res: Response) => {
     try {
-      
       const task = new Task(req.body);
       task.project = req.project.id;
       req.project.tasks.push(task.id);
+
+      // Handle Image upload
+      let fileData = {};
+      if (req.file) {
+        //save image to cloudinary
+        let uploadedFile;
+        try {
+          uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+            folder: "BInvent App",
+            resource_type: "image",
+          });
+        } catch (e) {
+          res.status(500);
+          throw new Error(e.message);
+        }
+        fileData = {
+          name: req.file.originalname,
+          filePath: uploadedFile.secure_url,
+          type: req.file.mimetype,
+          size: fileSizeFormatter(req.file.size, 2),
+        };
+      }
+
+      task.image = fileData
       Promise.allSettled([task.save(), req.project.save()]);
-      res.send("Task created successfully");
+      res.send(task);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

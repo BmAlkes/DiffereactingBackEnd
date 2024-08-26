@@ -40,7 +40,7 @@ export interface ITask extends Document {
     priority: string;
     deadline: string;
     assignedTask: string;
-    image: string;
+    image: object;
     alt: string;
 }
 declare const Task: mongoose.Model<ITask, {}, {}, {}, mongoose.Document<unknown, {}, ITask> & ITask & Required<{

@@ -6,6 +6,7 @@ import clientRoutes from "./routes/clientProject";
 import authRoutes from "./routes/authRoute";
 import cors from "cors";
 import morgan from "morgan";
+import path from 'path'
 
 
 dotenv.config();
@@ -25,7 +26,7 @@ app.use(express.json());
 
 //routes
 app.use("/api/auth", authRoutes);
-app.use("/api/projects", projectRoutes);
+app.use("/api/projects",express.static(path.join(__dirname,"uploads")), projectRoutes);
 app.use("/api/client", clientRoutes);
 
 export default app;

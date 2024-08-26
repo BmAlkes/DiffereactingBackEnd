@@ -17,7 +17,7 @@ export interface ITask extends Document {
   priority: string;
   deadline: string;
   assignedTask: string;
-  image: string;
+  image: object;
   alt: string;
 }
 
@@ -50,7 +50,8 @@ const TaskSchema: Schema = new Schema(
       type: String,
     },
     image: {
-      type: String,
+      type: Object,
+      default:{}
     },
     alt: {
       type: String,
