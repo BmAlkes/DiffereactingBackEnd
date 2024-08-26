@@ -42,7 +42,7 @@ class TaskController {
             }
             task.image = fileData;
             Promise.allSettled([task.save(), req.project.save()]);
-            res.send(task);
+            res.send("Task created successfully");
         }
         catch (err) {
             res.status(500).json({ error: err.message });
