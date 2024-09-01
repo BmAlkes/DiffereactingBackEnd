@@ -13,6 +13,7 @@ export class TaskController {
   static createTask = async (req: Request, res: Response) => {
     try {
       const task = new Task(req.body);
+      console.log(task)
       task.project = req.project.id;
       req.project.tasks.push(task.id);
 
@@ -23,7 +24,7 @@ export class TaskController {
         let uploadedFile;
         try {
           uploadedFile = await cloudinary.uploader.upload(req.file.path, {
-            folder: "BInvent App",
+            folder: "Differeacting",
             resource_type: "image",
           });
         } catch (e) {
@@ -38,9 +39,10 @@ export class TaskController {
         };
       }
 
-      task.image = fileData
+      task.image = fileData;
       Promise.allSettled([task.save(), req.project.save()]);
-      res.send("Task created successfully");
+      res.send(task);
+      console.log(task);
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

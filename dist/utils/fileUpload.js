@@ -22,9 +22,7 @@ const fileSizeFormatter = (bytes, decimal) => {
     const dm = decimal || 2;
     const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "YB", "ZB"];
     const index = Math.floor(Math.log(bytes) / Math.log(1000));
-    return (parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) +
-        " " +
-        sizes[index]);
+    return (parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) + " " + sizes[index]);
 };
 exports.fileSizeFormatter = fileSizeFormatter;
 exports.upload = (0, multer_1.default)({ storage });
