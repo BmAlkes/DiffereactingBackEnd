@@ -13,7 +13,7 @@ export class TaskController {
   static createTask = async (req: Request, res: Response) => {
     try {
       const task = new Task(req.body);
-      console.log(task)
+      console.log(task);
       task.project = req.project.id;
       req.project.tasks.push(task.id);
 
@@ -110,9 +110,13 @@ export class TaskController {
       if (!task) {
         return res.status(404).json({ error: "Task not found" });
       }
+
       const { status } = req.body;
       task.status = status;
-
+      if (status === "pending") {
+        req.task.completedBy = null; 
+      }
+      task.completedBy = req.user.id;
       await task.save();
       res.send("Task Update Success");
     } catch (error) {

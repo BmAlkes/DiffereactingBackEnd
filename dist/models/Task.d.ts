@@ -42,6 +42,7 @@ export interface ITask extends Document {
     assignedTask: string;
     image: object;
     alt: string;
+    completedBy: Types.ObjectId;
 }
 declare const Task: mongoose.Model<ITask, {}, {}, {}, mongoose.Document<unknown, {}, ITask> & ITask & Required<{
     _id: unknown;

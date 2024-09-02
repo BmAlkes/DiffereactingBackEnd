@@ -9,9 +9,14 @@ class ProjectController {
     static getAllProjects = async (req, res) => {
         const PAGE_SIZE = 6;
         try {
-            const totalProjects = await Project_1.default.find();
+            const totalProjects = await Project_1.default.find({});
             const { page } = req.query;
-            const projects = await Project_1.default.find({}, null, {
+            const projects = await Project_1.default.find({
+                $or: [
+                    { manager: { $in: req.user.id } },
+                    { team: { $in: req.user.id } }
+                ]
+            }, null, {
                 skip: Number(page) * PAGE_SIZE,
                 limit: PAGE_SIZE,
             }).sort();
@@ -32,6 +37,10 @@ class ProjectController {
             const project = await Project_1.default.findById(id).populate("tasks");
             if (!project) {
                 const error = new Error("Project not found");
+                return res.status(404).json({ error: error.message });
+            }
+            if (project.manager.toString() !== req.user.id.toString() && !project.team.includes(req.user.id)) {
+                const error = new Error("Action not allowed");
                 return res.status(404).json({ error: error.message });
             }
             res.json(project);
@@ -76,6 +85,7 @@ class ProjectController {
     };
     static createProject = async (req, res) => {
         const project = new Project_1.default(req.body);
+        project.manager = req.user.id;
         try {
             await project.save();
             res.send("Project Created Successfully");

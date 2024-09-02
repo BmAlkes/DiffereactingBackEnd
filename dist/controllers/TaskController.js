@@ -109,6 +109,10 @@ class TaskController {
             }
             const { status } = req.body;
             task.status = status;
+            if (status === "pending") {
+                req.task.completedBy = null;
+            }
+            task.completedBy = req.user.id;
             await task.save();
             res.send("Task Update Success");
         }

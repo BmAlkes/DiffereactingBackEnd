@@ -60,11 +60,16 @@ const TaskSchema = new mongoose_1.Schema({
     },
     image: {
         type: Object,
-        default: {}
+        default: null
     },
     alt: {
         type: String,
     },
+    completedBy: {
+        type: mongoose_1.Types.ObjectId,
+        ref: 'User',
+        default: null
+    }
 }, { timestamps: true });
 const Task = mongoose_1.default.model("Task", TaskSchema);
 exports.default = Task;

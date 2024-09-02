@@ -19,6 +19,7 @@ export interface ITask extends Document {
   assignedTask: string;
   image: object;
   alt: string;
+  completedBy:Types.ObjectId
 }
 
 const TaskSchema: Schema = new Schema(
@@ -51,11 +52,16 @@ const TaskSchema: Schema = new Schema(
     },
     image: {
       type: Object,
-      default:{}
+      default:null
     },
     alt: {
       type: String,
     },
+    completedBy:{
+      type:Types.ObjectId,
+      ref:'User',
+      default:null
+    }
   },
   { timestamps: true }
 );
