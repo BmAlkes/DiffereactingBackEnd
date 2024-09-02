@@ -30,11 +30,31 @@ const ClientSchema = new mongoose_1.Schema({
         require: true,
         trim: true,
     },
-    phone: { type: String, require: true, trim: true },
-    email: { type: String, require: true, trim: true },
-    bankHours: { type: String, require: true, trim: true },
-    description: { type: String, require: true, trim: true },
-    project: [{ type: mongoose_1.Types.ObjectId, ref: "Project" }],
+    phone: {
+        type: String,
+        require: true,
+        trim: true,
+    },
+    email: {
+        type: String,
+        require: true,
+        trim: true,
+    },
+    bankHours: {
+        type: String,
+        require: true,
+        trim: true,
+    },
+    description: {
+        type: String,
+        require: true,
+        trim: true,
+    },
+    active: {
+        type: Boolean,
+        require: true,
+        trim: true,
+    },
 }, { timestamps: true });
 const Client = mongoose_1.default.model("Clients", ClientSchema);
 exports.default = Client;

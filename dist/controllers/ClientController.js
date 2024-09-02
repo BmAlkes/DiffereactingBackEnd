@@ -16,6 +16,15 @@ class ClientController {
             console.log(error);
         }
     };
+    static getAllClient = async (req, res) => {
+        try {
+            const client = await Clients_1.default.find({});
+            res.json(client);
+        }
+        catch (error) {
+            res.status(500).send("Server error");
+        }
+    };
 }
 exports.ClientController = ClientController;
 //# sourceMappingURL=ClientController.js.map

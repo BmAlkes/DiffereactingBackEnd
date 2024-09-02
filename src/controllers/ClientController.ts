@@ -11,4 +11,15 @@ export class ClientController {
       console.log(error);
     }
   };
+
+  static getAllClient = async (req: Request, res: Response)=>{
+
+    try{
+      const client = await Client.find({})
+      res.json(client)
+    }catch(error) {
+      res.status(500).send("Server error");
+    }
+  }
 }
+

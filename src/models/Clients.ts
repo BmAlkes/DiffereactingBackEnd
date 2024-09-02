@@ -17,11 +17,31 @@ const ClientSchema: Schema = new Schema(
       require: true,
       trim: true,
     },
-    phone: { type: String, require: true, trim: true },
-    email: { type: String, require: true, trim: true },
-    bankHours: { type: String, require: true, trim: true },
-    description: { type: String, require: true, trim: true },
-    project: [{ type: Types.ObjectId, ref: "Project" }],
+    phone: {
+      type: String,
+      require: true,
+      trim: true,
+    },
+    email: {
+      type: String,
+      require: true,
+      trim: true,
+    },
+    bankHours: {
+      type: String,
+      require: true,
+      trim: true,
+    },
+    description: {
+      type: String,
+      require: true,
+      trim: true,
+    },
+    active: {
+      type: Boolean,
+      require: true,
+      trim: true,
+    },
   },
   { timestamps: true }
 );
