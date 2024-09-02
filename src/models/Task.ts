@@ -19,7 +19,10 @@ export interface ITask extends Document {
   assignedTask: string;
   image: object;
   alt: string;
-  completedBy:Types.ObjectId
+  completedBy:{
+    user:Types.ObjectId,
+    status:TaskStatus
+  }[]
 }
 
 const TaskSchema: Schema = new Schema(
@@ -57,11 +60,18 @@ const TaskSchema: Schema = new Schema(
     alt: {
       type: String,
     },
-    completedBy:{
-      type:Types.ObjectId,
-      ref:'User',
-      default:null
-    }
+    completedBy:[{
+      user:{
+        type:Types.ObjectId,
+        ref:'User',
+        default:null
+      },
+      status:{
+        type:String,
+        enum: Object.values(taskStatus),
+        default: taskStatus.PENDING,
+      }
+    }]
   },
   { timestamps: true }
 );

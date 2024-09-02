@@ -65,11 +65,18 @@ const TaskSchema = new mongoose_1.Schema({
     alt: {
         type: String,
     },
-    completedBy: {
-        type: mongoose_1.Types.ObjectId,
-        ref: 'User',
-        default: null
-    }
+    completedBy: [{
+            user: {
+                type: mongoose_1.Types.ObjectId,
+                ref: 'User',
+                default: null
+            },
+            status: {
+                type: String,
+                enum: Object.values(taskStatus),
+                default: taskStatus.PENDING,
+            }
+        }]
 }, { timestamps: true });
 const Task = mongoose_1.default.model("Task", TaskSchema);
 exports.default = Task;
