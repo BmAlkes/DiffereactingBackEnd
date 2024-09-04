@@ -7,9 +7,9 @@ exports.upload = exports.fileSizeFormatter = void 0;
 const multer_1 = __importDefault(require("multer"));
 //Define file storage
 const storage = multer_1.default.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "uploads");
-    },
+    // destination: function (req, file, cb) {
+    //   cb(null, "uploads");
+    // },
     filename: function (req, file, cb) {
         cb(null, new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname);
     },

@@ -16,7 +16,7 @@ export class ProjectController {
         skip: Number(page) * PAGE_SIZE,
         limit: PAGE_SIZE,
       }).sort();
-      const totalPage = Math.floor(totalProjects.length / PAGE_SIZE);
+      const totalPage = Math.floor(projects.length / PAGE_SIZE);
       res.json({
         totalPage,
         data: projects,
