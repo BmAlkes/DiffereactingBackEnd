@@ -23,15 +23,14 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 /// <reference types="mongoose/types/inferrawdoctype" />
-import mongoose, { Document, PopulatedDoc } from "mongoose";
-import { IProject } from "./Project";
+import mongoose, { Document } from "mongoose";
 export interface IClients extends Document {
     clientName: string;
     phone: string;
     email: string;
     bankHours: string;
     description: string;
-    project: PopulatedDoc<IProject & Document>[];
+    active: number;
 }
 declare const Client: mongoose.Model<IClients, {}, {}, {}, mongoose.Document<unknown, {}, IClients> & IClients & Required<{
     _id: unknown;
