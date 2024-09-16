@@ -30,7 +30,7 @@ export interface IClients extends Document {
     email: string;
     bankHours: string;
     description: string;
-    active: number;
+    active: boolean;
 }
 declare const Client: mongoose.Model<IClients, {}, {}, {}, mongoose.Document<unknown, {}, IClients> & IClients & Required<{
     _id: unknown;

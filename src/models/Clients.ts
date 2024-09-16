@@ -7,7 +7,7 @@ export interface IClients extends Document {
   email: string;
   bankHours: string;
   description: string;
-  active:number
+  active: boolean;
 }
 
 const ClientSchema: Schema = new Schema(
@@ -38,7 +38,7 @@ const ClientSchema: Schema = new Schema(
       trim: true,
     },
     active: {
-      type: Number,
+      type: Boolean,
       require: true,
       trim: true,
     },

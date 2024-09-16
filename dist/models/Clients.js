@@ -51,7 +51,7 @@ const ClientSchema = new mongoose_1.Schema({
         trim: true,
     },
     active: {
-        type: Number,
+        type: Boolean,
         require: true,
         trim: true,
     },
