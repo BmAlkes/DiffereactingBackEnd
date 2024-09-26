@@ -9,6 +9,7 @@ export interface IProject extends Document {
   client: Types.ObjectId;
  manager: PopulatedDoc<IUser & Document>;
  team:PopulatedDoc<IUser & Document>[]
+ active:boolean;
 }
 
 const ProjectSchema: Schema = new Schema(
@@ -44,6 +45,9 @@ const ProjectSchema: Schema = new Schema(
         ref: "User",
       },
     ],
+    active:{
+      type:Boolean
+    }
   },
 
   {
