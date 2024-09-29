@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
 import Project from "../models/Project";
+import notification from "../models/Notification";
 
 export class ProjectController {
   static getAllProjects = async (req: Request, res: Response) => {
     const PAGE_SIZE = 6;
     try {
-      const totalProjects = await Project.find({});
       const { page } = req.query;
       const projects = await Project.find({
         $or: [
@@ -84,7 +84,13 @@ export class ProjectController {
     const project = new Project(req.body);
     project.manager = req.user.id
     try {
+      notification.create({
+        userId:req.user.id,
+        projectId:project.id,
+        message:`New Project created by ${project}`
+      })
       await project.save();
+      console.log(project)
       res.send("Project Created Successfully");
     } catch (error) {
       console.log(error);

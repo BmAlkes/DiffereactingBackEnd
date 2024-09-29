@@ -5,6 +5,7 @@ export interface IUser extends Document{
     password: string;
     name: string;
     confirmed: boolean;
+   
 }
 
 const userSchema = new Schema({
@@ -25,7 +26,8 @@ const userSchema = new Schema({
     confirmed:{
         type: Boolean,
         default: false
-    }
+    },
+    
 })
 
 const User  = mongoose.model<IUser>('User', userSchema)

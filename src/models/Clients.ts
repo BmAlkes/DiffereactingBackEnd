@@ -1,5 +1,4 @@
-import mongoose, { Document, PopulatedDoc, Schema, Types } from "mongoose";
-import { IProject } from "./Project";
+import mongoose, { Document, Schema } from "mongoose";
 
 export interface IClients extends Document {
   clientName: string;
