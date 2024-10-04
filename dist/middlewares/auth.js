@@ -16,10 +16,9 @@ const authetication = async (req, res, next) => {
     try {
         const decode = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
         if (typeof decode === 'object' && decode.id) {
-            const user = await User_1.default.findById(decode.id).select('id name email');
+            const user = await User_1.default.findById(decode.id).select('id name email profileImage');
             if (user) {
                 req.user = user;
-                console.log(user);
             }
             else {
                 res.status(500).json({ error: 'Token not Valid' });

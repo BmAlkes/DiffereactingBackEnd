@@ -3,6 +3,7 @@ import { AuthController } from "../controllers/AuthControlle";
 import { body, param } from "express-validator";
 import { handleInputErros } from "../middlewares/validation";
 import { authetication } from "../middlewares/auth";
+import { upload } from "../utils/fileUpload";
 
 const router = Router();
 
@@ -80,6 +81,7 @@ router.get("/user", authetication, AuthController.user);
 
 router.put(
   "/profile",
+  upload.single('image'),
   authetication,
   body("name").notEmpty().withMessage("Name can not be empty"),
   body("email").isEmail().withMessage("Email not valid"),

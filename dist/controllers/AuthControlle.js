@@ -11,6 +11,13 @@ const token_1 = require("../utils/token");
 const AuthEmail_1 = require("../email/AuthEmail");
 const jwt_1 = require("../utils/jwt");
 const auth_1 = require("../utils/auth");
+const fileUpload_1 = require("../utils/fileUpload");
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+    cloud_name: "landingpage2",
+    api_key: "959475658351858",
+    api_secret: "AR-ajbZhd7C9lidxIH-5aiLitpw",
+});
 class AuthController {
     static createAccount = async (req, res) => {
         try {
@@ -180,17 +187,42 @@ class AuthController {
         }
     };
     static user = async (req, res) => {
+        console.log(req.user);
         return res.json(req.user);
     };
     static updateProfile = async (req, res) => {
         const { name, email } = req.body;
+        console.log(req.file);
         const userExists = await User_1.default.findOne({ email });
         if (userExists && userExists.id.toString() !== req.user.id.toString()) {
             const error = new Error(`This email is already register `);
             return res.status(409).json({ error: error.message });
         }
+        let fileData = {};
+        if (req.file) {
+            //save image to cloudinary
+            let uploadedFile;
+            try {
+                uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+                    folder: "Differeacting",
+                    resource_type: "image",
+                });
+            }
+            catch (e) {
+                res.status(500);
+                throw new Error(e.message);
+            }
+            fileData = {
+                name: req.file.originalname,
+                filePath: uploadedFile.secure_url,
+                type: req.file.mimetype,
+                size: (0, fileUpload_1.fileSizeFormatter)(req.file.size, 2),
+            };
+        }
         req.user.name = name;
         req.user.email = email;
+        req.user.profileImage = fileData;
+        console.log(req.user.profileImage);
         try {
             await req.user.save();
             res.send("profile updated successfully");
@@ -204,16 +236,16 @@ class AuthController {
         const user = await User_1.default.findById(req.user.id);
         const isPasswordCorrect = await (0, auth_1.checkPassword)(current_password, user.password);
         if (!isPasswordCorrect) {
-            const error = new Error('The current password is incorrect');
+            const error = new Error("The current password is incorrect");
             return res.status(401).json({ error: error.message });
         }
         try {
             user.password = await (0, auth_1.hashPassword)(password);
             await user.save();
-            res.send('The password changed successfully');
+            res.send("The password changed successfully");
         }
         catch (error) {
-            res.status(500).send('has a error');
+            res.status(500).send("has a error");
         }
     };
     static checkPassword = async (req, res) => {
@@ -221,10 +253,10 @@ class AuthController {
         const user = await User_1.default.findById(req.user.id);
         const isPasswordCorrect = await (0, auth_1.checkPassword)(password, user.password);
         if (!isPasswordCorrect) {
-            const error = new Error('The password is incorrect');
+            const error = new Error("The password is incorrect");
             return res.status(401).json({ error: error.message });
         }
-        res.send('Password Correct');
+        res.send("Password Correct");
     };
 }
 exports.AuthController = AuthController;

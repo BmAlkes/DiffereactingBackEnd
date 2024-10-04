@@ -5,6 +5,7 @@ const AuthControlle_1 = require("../controllers/AuthControlle");
 const express_validator_1 = require("express-validator");
 const validation_1 = require("../middlewares/validation");
 const auth_1 = require("../middlewares/auth");
+const fileUpload_1 = require("../utils/fileUpload");
 const router = (0, express_1.Router)();
 router.post("/create-account", (0, express_validator_1.body)("name").notEmpty().withMessage("Name can not be empty"), (0, express_validator_1.body)("password")
     .isLength({ min: 8 })
@@ -29,7 +30,7 @@ router.post("/update-password/:token", (0, express_validator_1.param)("token").i
 }), validation_1.handleInputErros, AuthControlle_1.AuthController.updatePasswordWithToken);
 router.get("/user", auth_1.authetication, AuthControlle_1.AuthController.user);
 //Profile
-router.put("/profile", auth_1.authetication, (0, express_validator_1.body)("name").notEmpty().withMessage("Name can not be empty"), (0, express_validator_1.body)("email").isEmail().withMessage("Email not valid"), validation_1.handleInputErros, AuthControlle_1.AuthController.updateProfile);
+router.put("/profile", fileUpload_1.upload.single('image'), auth_1.authetication, (0, express_validator_1.body)("name").notEmpty().withMessage("Name can not be empty"), (0, express_validator_1.body)("email").isEmail().withMessage("Email not valid"), validation_1.handleInputErros, AuthControlle_1.AuthController.updateProfile);
 router.post("/update-password", auth_1.authetication, (0, express_validator_1.body)("current_password")
     .isLength({ min: 8 })
     .withMessage("Password can be less than 8 characters"), (0, express_validator_1.body)("password_confirmation").custom((value, { req }) => {

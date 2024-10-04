@@ -7,6 +7,14 @@ import { AuthEmail } from "../email/AuthEmail";
 import { generateJWT } from "../utils/jwt";
 import { checkPassword, hashPassword } from "../utils/auth";
 import { ServerHeartbeatSucceededEvent } from "mongodb";
+import { fileSizeFormatter } from "../utils/fileUpload";
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: "landingpage2",
+  api_key: "959475658351858",
+  api_secret: "AR-ajbZhd7C9lidxIH-5aiLitpw",
+});
 
 export class AuthController {
   static createAccount = async (req: Request, res: Response) => {
@@ -200,10 +208,14 @@ export class AuthController {
   };
 
   static user = async (req: Request, res: Response) => {
+    console.log(req.user )
     return res.json(req.user);
   };
+
   static updateProfile = async (req: Request, res: Response) => {
-    const { name, email } = req.body;
+    const { name, email} = req.body;
+   
+    console.log(req.file)
 
     const userExists = await User.findOne({ email });
 
@@ -212,9 +224,31 @@ export class AuthController {
       return res.status(409).json({ error: error.message });
     }
 
+    let fileData = {};
+    if (req.file) {
+      //save image to cloudinary
+      let uploadedFile;
+      try {
+        uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+          folder: "Differeacting",
+          resource_type: "image",
+        });
+      } catch (e) {
+        res.status(500);
+        throw new Error(e.message);
+      }
+      fileData = {
+        name: req.file.originalname,
+        filePath: uploadedFile.secure_url,
+        type: req.file.mimetype,
+        size: fileSizeFormatter(req.file.size, 2),
+      };
+    }
     req.user.name = name;
     req.user.email = email;
+    req.user.profileImage = fileData;
 
+    console.log(req.user.profileImage)
     try {
       await req.user.save();
       res.send("profile updated successfully");
@@ -224,36 +258,39 @@ export class AuthController {
   };
 
   static updateCurrentUserPassword = async (req: Request, res: Response) => {
-    const { current_password, password } = req.body
+    const { current_password, password } = req.body;
 
-        const user = await User.findById(req.user.id)
+    const user = await User.findById(req.user.id);
 
-        const isPasswordCorrect = await checkPassword(current_password, user.password)
-        if(!isPasswordCorrect) {
-            const error = new Error('The current password is incorrect')
-            return res.status(401).json({error: error.message})
-        }
+    const isPasswordCorrect = await checkPassword(
+      current_password,
+      user.password
+    );
+    if (!isPasswordCorrect) {
+      const error = new Error("The current password is incorrect");
+      return res.status(401).json({ error: error.message });
+    }
 
-        try {
-            user.password = await hashPassword(password)
-            await user.save()
-            res.send('The password changed successfully')
-        } catch (error) {
-            res.status(500).send('has a error')
-        }
+    try {
+      user.password = await hashPassword(password);
+      await user.save();
+      res.send("The password changed successfully");
+    } catch (error) {
+      res.status(500).send("has a error");
+    }
   };
 
   static checkPassword = async (req: Request, res: Response) => {
-    const { password } = req.body
+    const { password } = req.body;
 
-    const user = await User.findById(req.user.id)
+    const user = await User.findById(req.user.id);
 
-    const isPasswordCorrect = await checkPassword(password, user.password)
-    if(!isPasswordCorrect) {
-        const error = new Error('The password is incorrect')
-        return res.status(401).json({error: error.message})
+    const isPasswordCorrect = await checkPassword(password, user.password);
+    if (!isPasswordCorrect) {
+      const error = new Error("The password is incorrect");
+      return res.status(401).json({ error: error.message });
     }
 
-    res.send('Password Correct')
-}
+    res.send("Password Correct");
+  };
 }

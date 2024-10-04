@@ -5,7 +5,7 @@ export interface IUser extends Document{
     password: string;
     name: string;
     confirmed: boolean;
-   
+    profileImage: object;
 }
 
 const userSchema = new Schema({
@@ -27,6 +27,10 @@ const userSchema = new Schema({
         type: Boolean,
         default: false
     },
+    profileImage:{
+        type: Object,
+        default:null
+    }
     
 })
 

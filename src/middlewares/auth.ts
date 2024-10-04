@@ -25,10 +25,9 @@ export const authetication = async (
   try {
     const decode = jwt.verify(token, process.env.JWT_SECRET);
     if(typeof decode === 'object' && decode.id){
-        const user = await User.findById(decode.id).select('id name email')
+        const user = await User.findById(decode.id).select('id name email profileImage')
     if(user){
         req.user = user
-        console.log(user)
     }else{
         res.status(500).json({ error:'Token not Valid'})
     }

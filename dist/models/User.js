@@ -43,6 +43,10 @@ const userSchema = new mongoose_1.Schema({
         type: Boolean,
         default: false
     },
+    profileImage: {
+        type: Object,
+        default: null
+    }
 });
 const User = mongoose_1.default.model('User', userSchema);
 exports.default = User;
