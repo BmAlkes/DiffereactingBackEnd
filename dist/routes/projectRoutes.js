@@ -19,7 +19,7 @@ router.put("/:id", (0, express_validator_1.param)("id").isMongoId().withMessage(
 router.delete("/:id", ProjectController_1.ProjectController.deleteProject);
 // Routes  for Tasks
 router.param("projectId", project_1.projectExists);
-router.put("/:projectId", (0, fileUpload_1.uploadMultiple)("image"), (0, express_validator_1.param)("projectId").isMongoId().withMessage("ID no válido"), (0, express_validator_1.body)("projectName")
+router.put("/:projectId", fileUpload_1.upload.single("image"), (0, express_validator_1.param)("projectId").isMongoId().withMessage("ID no válido"), (0, express_validator_1.body)("projectName")
     .notEmpty()
     .withMessage("El Nombre del Proyecto es Obligatorio"), (0, express_validator_1.body)("clientName")
     .notEmpty()
@@ -27,7 +27,7 @@ router.put("/:projectId", (0, fileUpload_1.uploadMultiple)("image"), (0, express
     .notEmpty()
     .withMessage("La Descripción del Proyecto es Obligatoria"), validation_1.handleInputErros, ProjectController_1.ProjectController.updatedProject);
 router.delete("/:projectId", (0, express_validator_1.param)("projectId").isMongoId().withMessage("ID no válido"), validation_1.handleInputErros, ProjectController_1.ProjectController.deleteProject);
-router.post("/:projectId/tasks", (0, fileUpload_1.uploadMultiple)("image"), validation_1.handleInputErros, TaskController_1.TaskController.createTask);
+router.post("/:projectId/tasks", fileUpload_1.upload.single("image"), validation_1.handleInputErros, TaskController_1.TaskController.createTask);
 router.get("/:projectId/tasks", TaskController_1.TaskController.getProjectTasks);
 router.param("taskId", task_1.taskExists);
 // router.param('taskId',"")
@@ -36,9 +36,9 @@ router.put("/:projectId/tasks/:taskId", validation_1.handleInputErros, TaskContr
 router.delete("/:projectId/tasks/:taskId", (0, express_validator_1.param)("taskId").isMongoId().withMessage("ID no válido"), validation_1.handleInputErros, TaskController_1.TaskController.deleteTask);
 router.post("/:projectId/tasks/:taskId/status", (0, express_validator_1.param)("taskId").isMongoId().withMessage("ID not valid"), (0, express_validator_1.body)("status").notEmpty().withMessage("State is required"), validation_1.handleInputErros, TaskController_1.TaskController.updateStatus);
 // Routes for Team
-router.post("/:projectId/team/find", (0, express_validator_1.body)("email").isEmail().toLowerCase().withMessage("Email is not valid"), validation_1.handleInputErros, TeamController_1.TeamMemberController.findMemberByEmail);
-router.get("/:projectId/team", TeamController_1.TeamMemberController.getProjectTeam);
-router.post("/:projectId/team", (0, express_validator_1.body)("id").isMongoId().withMessage("ID Not Valid"), validation_1.handleInputErros, TeamController_1.TeamMemberController.addMemberById);
-router.delete("/:projectId/team/:userId", (0, express_validator_1.param)("userId").isMongoId().withMessage("ID Not Valid"), validation_1.handleInputErros, TeamController_1.TeamMemberController.removeMemberById);
+router.post('/:projectId/team/find', (0, express_validator_1.body)("email").isEmail().toLowerCase().withMessage("Email is not valid"), validation_1.handleInputErros, TeamController_1.TeamMemberController.findMemberByEmail);
+router.get('/:projectId/team', TeamController_1.TeamMemberController.getProjectTeam);
+router.post('/:projectId/team', (0, express_validator_1.body)('id').isMongoId().withMessage("ID Not Valid"), validation_1.handleInputErros, TeamController_1.TeamMemberController.addMemberById);
+router.delete('/:projectId/team/:userId', (0, express_validator_1.param)('userId').isMongoId().withMessage("ID Not Valid"), validation_1.handleInputErros, TeamController_1.TeamMemberController.removeMemberById);
 exports.default = router;
 //# sourceMappingURL=projectRoutes.js.map

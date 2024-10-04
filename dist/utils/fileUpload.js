@@ -1,33 +1,29 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.uploadMultiple = void 0;
-const multer = require('multer');
-const path = require('path');
-// Configurar o armazenamento de imagens
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/'); // Pasta onde as imagens serão salvas
-    },
-    filename: (req, file, cb) => {
-        cb(null, `${Date.now()}_${file.originalname}`); // Nome único para cada imagem
-    }
-});
-// Filtrar arquivos (aceitar apenas imagens)
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|gif/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-    if (mimetype && extname) {
-        cb(null, true);
-    }
-    else {
-        cb(new Error('Apenas imagens são permitidas!'));
-    }
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-// Middleware de upload para múltiplas imagens
-exports.uploadMultiple = multer({
-    storage: storage,
-    limits: { fileSize: 1024 * 1024 * 5 }, // Limite de 5MB por imagem
-    fileFilter: fileFilter
-}).array('images', 10); // Permitir até 10 ima
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.upload = exports.fileSizeFormatter = void 0;
+const multer_1 = __importDefault(require("multer"));
+//Define file storage
+const storage = multer_1.default.diskStorage({
+    // destination: function (req, file, cb) {
+    //   cb(null, "uploads");
+    // },
+    filename: function (req, file, cb) {
+        cb(null, new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname);
+    },
+});
+//Spefify file format that can be saved
+const fileSizeFormatter = (bytes, decimal) => {
+    if (bytes === 0) {
+        return "0 Bytes";
+    }
+    const dm = decimal || 2;
+    const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "YB", "ZB"];
+    const index = Math.floor(Math.log(bytes) / Math.log(1000));
+    return (parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) + " " + sizes[index]);
+};
+exports.fileSizeFormatter = fileSizeFormatter;
+exports.upload = (0, multer_1.default)({ storage });
 //# sourceMappingURL=fileUpload.js.map
