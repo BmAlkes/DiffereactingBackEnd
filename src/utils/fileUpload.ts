@@ -1,30 +1,32 @@
-import multer from "multer";
+const multer = require('multer');
+const path = require('path');
 
-//Define file storage
+// Configurar o armazenamento de imagens
 const storage = multer.diskStorage({
-  // destination: function (req, file, cb) {
-  //   cb(null, "uploads");
-  // },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      new Date().toISOString().replace(/:/g, "-") + "-" + file.originalname
-    );
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/'); // Pasta onde as imagens serão salvas
   },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}_${file.originalname}`); // Nome único para cada imagem
+  }
 });
 
-//Spefify file format that can be saved
+// Filtrar arquivos (aceitar apenas imagens)
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = /jpeg|jpg|png|gif/;
+  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = allowedTypes.test(file.mimetype);
 
-export const fileSizeFormatter = (bytes, decimal) => {
-  if (bytes === 0) {
-    return "0 Bytes";
+  if (mimetype && extname) {
+    cb(null, true);
+  } else {
+    cb(new Error('Apenas imagens são permitidas!'));
   }
-  const dm = decimal || 2;
-  const sizes = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "YB", "ZB"];
-  const index = Math.floor(Math.log(bytes) / Math.log(1000));
-  return (
-    parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) + " " + sizes[index]
-  );
 };
 
-export const upload = multer({ storage });
+// Middleware de upload para múltiplas imagens
+ export const uploadMultiple = multer({
+  storage: storage,
+  limits: { fileSize: 1024 * 1024 * 5 }, // Limite de 5MB por imagem
+  fileFilter: fileFilter
+}).array('images', 10); // Permitir até 10 ima

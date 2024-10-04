@@ -5,17 +5,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectController = void 0;
 const Project_1 = __importDefault(require("../models/Project"));
+const Notification_1 = __importDefault(require("../models/Notification"));
+const User_1 = __importDefault(require("../models/User"));
 class ProjectController {
     static getAllProjects = async (req, res) => {
         const PAGE_SIZE = 6;
         try {
-            const totalProjects = await Project_1.default.find({});
             const { page } = req.query;
             const projects = await Project_1.default.find({
                 $or: [
                     { manager: { $in: req.user.id } },
-                    { team: { $in: req.user.id } }
-                ]
+                    { team: { $in: req.user.id } },
+                ],
             }, null, {
                 skip: Number(page) * PAGE_SIZE,
                 limit: PAGE_SIZE,
@@ -39,7 +40,8 @@ class ProjectController {
                 const error = new Error("Project not found");
                 return res.status(404).json({ error: error.message });
             }
-            if (project.manager.toString() !== req.user.id.toString() && !project.team.includes(req.user.id)) {
+            if (project.manager.toString() !== req.user.id.toString() &&
+                !project.team.includes(req.user.id)) {
                 const error = new Error("Action not allowed");
                 return res.status(404).json({ error: error.message });
             }
@@ -86,7 +88,14 @@ class ProjectController {
     static createProject = async (req, res) => {
         const project = new Project_1.default(req.body);
         project.manager = req.user.id;
+        const user = await User_1.default.findById(req.user.id);
         try {
+            Notification_1.default.create({
+                userId: req.user.id,
+                projectId: project.id,
+                message: `New Project created by ${user.name}`,
+            });
+            //  
             await project.save();
             res.send("Project Created Successfully");
         }
