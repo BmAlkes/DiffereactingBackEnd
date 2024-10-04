@@ -1,5 +1,6 @@
 import type { Request, Response } from "express";
 import Task from "../models/Task";
+import { fileSizeFormatter } from "../utils/fileUpload";
 const cloudinary = require("cloudinary").v2;
 
 cloudinary.config({
@@ -34,7 +35,7 @@ export class TaskController {
           name: req.file.originalname,
           filePath: uploadedFile.secure_url,
           type: req.file.mimetype,
-        
+          size: fileSizeFormatter(req.file.size, 2),
         };
       }
 

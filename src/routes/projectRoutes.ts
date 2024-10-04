@@ -7,7 +7,7 @@ import { projectExists } from "../middlewares/project";
 import { taskExists } from "../middlewares/task";
 import { authetication } from "../middlewares/auth";
 import { TeamMemberController } from "../controllers/TeamController";
-import { uploadMultiple } from "../utils/fileUpload";
+import { upload } from "../utils/fileUpload";
 
 const router = Router();
 
@@ -46,7 +46,7 @@ router.param("projectId", projectExists);
 
 router.put(
   "/:projectId",
-  uploadMultiple("image"),
+  upload.single("image"),
   param("projectId").isMongoId().withMessage("ID no válido"),
   body("projectName")
     .notEmpty()
@@ -72,7 +72,7 @@ router.delete(
 
 router.post(
   "/:projectId/tasks",
-  uploadMultiple("image"),
+  upload.single("image"),
   handleInputErros,
   TaskController.createTask
 );
@@ -114,27 +114,15 @@ router.post(
 
 // Routes for Team
 
-router.post(
-  "/:projectId/team/find",
-  body("email").isEmail().toLowerCase().withMessage("Email is not valid"),
-  handleInputErros,
-  TeamMemberController.findMemberByEmail
-);
+router.post('/:projectId/team/find',body("email").isEmail().toLowerCase().withMessage("Email is not valid"),handleInputErros, TeamMemberController.findMemberByEmail)
 
-router.get("/:projectId/team", TeamMemberController.getProjectTeam);
+router.get('/:projectId/team', TeamMemberController.getProjectTeam)
 
-router.post(
-  "/:projectId/team",
-  body("id").isMongoId().withMessage("ID Not Valid"),
-  handleInputErros,
-  TeamMemberController.addMemberById
-);
 
-router.delete(
-  "/:projectId/team/:userId",
-  param("userId").isMongoId().withMessage("ID Not Valid"),
-  handleInputErros,
-  TeamMemberController.removeMemberById
-);
+router.post('/:projectId/team',body('id').isMongoId().withMessage("ID Not Valid"), handleInputErros, TeamMemberController.addMemberById)
+
+router.delete('/:projectId/team/:userId',param('userId').isMongoId().withMessage("ID Not Valid"), handleInputErros, TeamMemberController.removeMemberById)
+
+
 
 export default router;
