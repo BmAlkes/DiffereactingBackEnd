@@ -12,16 +12,19 @@ const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const path_1 = __importDefault(require("path"));
+const body_parser_1 = __importDefault(require("body-parser"));
 dotenv_1.default.config();
 (0, mongoose_database_1.connectToDatabase)();
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
 app.use((req, res, next) => {
     res.header("Acess-Control-Allow-Methods", "*");
     res.header("Acess-Control-Allow-Headers", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
     res.header("Acess-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
 });
+app.use(body_parser_1.default.json({ limit: "50mb" }));
+app.use(body_parser_1.default.urlencoded({ limit: "50mb", extended: true }));
+app.use((0, cors_1.default)());
 app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 //routes

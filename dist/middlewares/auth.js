@@ -15,13 +15,13 @@ const authetication = async (req, res, next) => {
     const [, token] = beared.split(" ");
     try {
         const decode = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
-        if (typeof decode === 'object' && decode.id) {
-            const user = await User_1.default.findById(decode.id).select('id name email profileImage');
+        if (typeof decode === "object" && decode.id) {
+            const user = await User_1.default.findById(decode.id).select("id name email profileImage");
             if (user) {
                 req.user = user;
             }
             else {
-                res.status(500).json({ error: 'Token not Valid' });
+                res.status(500).json({ error: "Token not Valid" });
             }
         }
     }

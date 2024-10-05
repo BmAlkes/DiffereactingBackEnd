@@ -3,12 +3,13 @@ import { ClientController } from "../controllers/ClientController";
 import { authetication } from "../middlewares/auth";
 import { handleInputErros } from "../middlewares/validation";
 import { body, param } from "express-validator";
+import { upload } from "../utils/fileUpload";
 
 const router = Router();
 
 router.use(authetication);
 
-router.post("/", body("clientName").notEmpty().withMessage('Client Name is required'),
+router.post("/", upload.single('image'), body("clientName").notEmpty().withMessage('Client Name is required'),
 body("phone").notEmpty().withMessage("phone is required"),
   body("email").notEmpty().withMessage("email is required"),
 handleInputErros ,ClientController.createClient);
