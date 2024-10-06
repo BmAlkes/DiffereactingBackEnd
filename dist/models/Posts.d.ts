@@ -23,10 +23,15 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 /// <reference types="mongoose/types/inferrawdoctype" />
-import { Document, PopulatedDoc } from "mongoose";
+import mongoose, { Document, PopulatedDoc } from "mongoose";
 import { IUser } from "./User";
 export interface Ipost extends Document {
     title: string;
     content: string;
+    summery: string;
     author: PopulatedDoc<IUser & Document>;
+    image: object;
 }
+export declare const Posts: mongoose.Model<Ipost, {}, {}, {}, mongoose.Document<unknown, {}, Ipost> & Ipost & Required<{
+    _id: unknown;
+}>, any>;

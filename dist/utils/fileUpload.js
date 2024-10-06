@@ -25,5 +25,5 @@ const fileSizeFormatter = (bytes, decimal) => {
     return (parseFloat((bytes / Math.pow(1000, index)).toFixed(dm)) + " " + sizes[index]);
 };
 exports.fileSizeFormatter = fileSizeFormatter;
-exports.upload = (0, multer_1.default)({ storage });
+exports.upload = (0, multer_1.default)({ storage, limits: { fieldSize: 25 * 1024 * 1024 } });
 //# sourceMappingURL=fileUpload.js.map

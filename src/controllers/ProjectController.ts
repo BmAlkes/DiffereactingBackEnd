@@ -1,7 +1,7 @@
 import type { Request, Response } from "express";
 import Project from "../models/Project";
 import notification from "../models/Notification";
-import User, { IUser } from "../models/User";
+import User from "../models/User";
 
 export class ProjectController {
   static getAllProjects = async (req: Request, res: Response) => {

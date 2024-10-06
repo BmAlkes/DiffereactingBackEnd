@@ -4,6 +4,7 @@ import { connectToDatabase } from "./config/mongoose.database";
 import projectRoutes from "./routes/projectRoutes";
 import clientRoutes from "./routes/clientProject";
 import authRoutes from "./routes/authRoute";
+import postRoutes from "./routes/postsRoutes";
 import cors from "cors";
 import morgan from "morgan";
 import path from "path";
@@ -14,13 +15,13 @@ connectToDatabase();
 
 const app = express();
 app.use((req, res, next) => {
-    res.header("Acess-Control-Allow-Methods", "*");
-    res.header("Acess-Control-Allow-Headers", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
-    res.header(
-        "Acess-Control-Allow-Headers",
-        "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
-    next();
+  res.header("Acess-Control-Allow-Methods", "*");
+  res.header("Acess-Control-Allow-Headers", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
+  res.header(
+    "Acess-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
+  next();
 });
 
 app.use(bodyParser.json({ limit: "50mb" }));
@@ -37,5 +38,10 @@ app.use(
   projectRoutes
 );
 app.use("/api/client", clientRoutes);
+app.use(
+  "/api/posts",
+  express.static(path.join(__dirname, "uploads")),
+  postRoutes
+);
 
 export default app;
