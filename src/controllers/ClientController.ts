@@ -29,7 +29,7 @@ export class ClientController {
       if (!client) {
         return res.status(404).json({ error: "Client not found" });
       }
-      await client.deleteOne()
+      await client.deleteOne();
       return res.send("Client remove successfully");
     } catch (error) {
       res.status(500).send("Server error");
@@ -39,13 +39,12 @@ export class ClientController {
   static getProjectById = async (req: Request, res: Response) => {
     const { id } = req.params;
     try {
-      const client = await Client.findById(id)
+      const client = await Client.findById(id);
       if (!client) {
         const error = new Error("Client not found");
         return res.status(404).json({ error: error.message });
       }
-     
-    
+
       res.json(client);
     } catch (error) {
       console.log(error);
@@ -54,20 +53,19 @@ export class ClientController {
   };
 
   static updatedClient = async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const { clientId } = req.params;
+    console.log(clientId, req.body);
     try {
-      const project = await Client.findByIdAndUpdate(id, req.body, {
-        new: true,
-      });
-      if (!project) {
+      const client = await Client.findByIdAndUpdate(clientId, req.body);
+      if (!client) {
         const error = new Error("Client not Found ");
         return res.status(404).json({ error: error.message });
       }
+
       res.send("Client updated successfully");
     } catch (error) {
       console.log(error);
       res.status(500).send("Server error");
     }
   };
-
 }

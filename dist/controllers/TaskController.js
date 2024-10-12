@@ -61,7 +61,10 @@ class TaskController {
     static getTaskById = async (req, res) => {
         try {
             const { taskId } = req.params;
-            const tasks = await Task_1.default.findById(taskId).populate({ path: 'completedBy.user', select: 'id name email' });
+            const tasks = await Task_1.default.findById(taskId).populate({
+                path: "completedBy.user",
+                select: "id name email",
+            });
             if (!tasks) {
                 return res.status(404).json({ error: "Task not found" });
             }
@@ -110,7 +113,7 @@ class TaskController {
             task.status = status;
             const data = {
                 user: req.user.id,
-                status
+                status,
             };
             console.log(data);
             task.completedBy.push(data);

@@ -56,12 +56,11 @@ class ClientController {
         }
     };
     static updatedClient = async (req, res) => {
-        const { id } = req.params;
+        const { clientId } = req.params;
+        console.log(clientId, req.body);
         try {
-            const project = await Clients_1.default.findByIdAndUpdate(id, req.body, {
-                new: true,
-            });
-            if (!project) {
+            const client = await Clients_1.default.findByIdAndUpdate(clientId, req.body);
+            if (!client) {
                 const error = new Error("Client not Found ");
                 return res.status(404).json({ error: error.message });
             }
