@@ -52,6 +52,36 @@ class PostsController {
             res.status(500).json({ error: "Had a error" });
         }
     };
+    static deletePost = async (req, res) => {
+        try {
+            const { postId } = req.params;
+            console.log(postId);
+            const post = await Posts_1.Posts.findById(postId);
+            if (!post) {
+                return res.status(404).json({ error: "Post not found" });
+            }
+            await post.deleteOne();
+            return res.send("Post delete successfully");
+        }
+        catch (error) {
+            res.status(500).send("Server error");
+        }
+    };
+    static getPostById = async (req, res) => {
+        const { id } = req.params;
+        try {
+            const post = await Posts_1.Posts.findById(id);
+            if (!post) {
+                const error = new Error("Post not found");
+                return res.status(404).json({ error: error.message });
+            }
+            res.json(post);
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send("Server error");
+        }
+    };
 }
 exports.PostsController = PostsController;
 //# sourceMappingURL=PostsController.js.map
