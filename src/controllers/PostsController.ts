@@ -82,4 +82,24 @@ export class PostsController {
       res.status(500).send("Server error");
     }
   };
+
+
+  static updatedPost = async (req: Request, res: Response) => {
+    const {id} = req.params;
+    console.log(id);
+
+    try {
+      const post = await Posts.findByIdAndUpdate(id, req.body);
+      if (!post) {
+        const error = new Error("Post not Found ");
+        return res.status(404).json({ error: error.message });
+      }
+
+      res.send("Post updated successfully");
+    } catch (error) {
+      console.log(error);
+      res.status(500).send("Server error");
+    }
+  };
 }
+
