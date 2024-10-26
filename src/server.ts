@@ -5,6 +5,7 @@ import projectRoutes from "./routes/projectRoutes";
 import clientRoutes from "./routes/clientProject";
 import authRoutes from "./routes/authRoute";
 import postRoutes from "./routes/postsRoutes";
+import leadRoutes from './routes/leadRoute'
 import cors from "cors";
 import morgan from "morgan";
 import path from "path";
@@ -43,7 +44,7 @@ app.use(
   express.static(path.join(__dirname, "uploads")),
   postRoutes
 );
-
+app.use("/api/leads",leadRoutes)
 
 
 export default app;

@@ -13,7 +13,7 @@ export class PostsController {
   static createPost = async (req: Request, res: Response) => {
     try {
       const post = new Posts(req.body);
-      console.log(req.file)
+      console.log(req.file);
 
       let fileData = {};
       if (req.file) {
@@ -45,7 +45,7 @@ export class PostsController {
 
   static getAllPosts = async (req: Request, res: Response) => {
     try {
-      const posts= await Posts.find()
+      const posts = await Posts.find();
       return res.json(posts);
     } catch (error) {
       res.status(500).json({ error: "Had a error" });
@@ -65,7 +65,7 @@ export class PostsController {
     } catch (error) {
       res.status(500).send("Server error");
     }
-  }
+  };
 
   static getPostById = async (req: Request, res: Response) => {
     const { id } = req.params;
@@ -83,9 +83,8 @@ export class PostsController {
     }
   };
 
-
   static updatedPost = async (req: Request, res: Response) => {
-    const {id} = req.params;
+    const { id } = req.params;
     console.log(id);
 
     try {
@@ -102,4 +101,3 @@ export class PostsController {
     }
   };
 }
-
