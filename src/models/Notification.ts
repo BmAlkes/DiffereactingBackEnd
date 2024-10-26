@@ -1,31 +1,43 @@
 import mongoose, { Schema, Types } from "mongoose";
 
 export interface INotification {
-  userId: string;
-  projectId: string;
-  message: string;
-  isRead: boolean;
+  type: [string];
+  leadId: Types.ObjectId;
+  read: boolean;
+  createDate: string;
 }
 
 const notificationSchema = new Schema(
   {
-    userId: {
-      type: Types.ObjectId,
-      required: true,
-      ref: "User",
+    type: {
+      type: String,
+      enum: ['New_lead', 'lead_updated'],
+      required: true
     },
-    projectId: { type: Types.ObjectId, ref: "Project" },
-    message: { type: String, required: true },
-    isRead: { type: Boolean, default: false },
-  },
-  {
-    timestamps: true,
+    leadId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Leads',
+      required: true
+    },
+    read: {
+      type: Boolean,
+      default: false
+    },
+   createDate: {
+      type: Date,
+      default: Date.now
+    },
+    expiresAt:{
+      type:Date,
+      default:Date.now(),
+      expires:"24h"
+  }
   }
 );
 
-const notification = mongoose.model<INotification>(
+const Notification = mongoose.model<INotification>(
   "Notification",
   notificationSchema
 );
 
-export default notification;
+export default Notification;

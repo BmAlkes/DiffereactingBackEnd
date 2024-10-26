@@ -21,16 +21,11 @@
 /// <reference types="mongoose/types/utility" />
 /// <reference types="mongoose/types/validation" />
 /// <reference types="mongoose/types/virtuals" />
+/// <reference types="mongoose" />
 /// <reference types="mongoose/types/inferschematype" />
 /// <reference types="mongoose/types/inferrawdoctype" />
-import mongoose, { Types } from "mongoose";
-export interface INotification {
-    type: [string];
-    leadId: Types.ObjectId;
-    read: boolean;
-    createDate: string;
-}
-declare const Notification: mongoose.Model<INotification, {}, {}, {}, mongoose.Document<unknown, {}, INotification> & INotification & {
-    _id: Types.ObjectId;
-}, any>;
-export default Notification;
+declare const router: import("express-serve-static-core").Router;
+export declare const createNotification: (lead: any, type: any) => Promise<import("mongoose").Document<unknown, {}, import("../models/Notification").INotification> & import("../models/Notification").INotification & {
+    _id: import("mongoose").Types.ObjectId;
+}>;
+export default router;

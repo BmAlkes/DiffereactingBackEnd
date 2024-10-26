@@ -5,11 +5,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Lead_1 = __importDefault(require("../models/Lead"));
+const notificationRoutes_1 = require("./notificationRoutes");
 const router = (0, express_1.Router)();
 router.post('/', async (req, res) => {
     try {
         const lead = new Lead_1.default(req.body);
         await lead.save();
+        await (0, notificationRoutes_1.createNotification)(lead, 'New_lead');
         res.status(201).json(lead);
     }
     catch (error) {

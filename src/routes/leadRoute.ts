@@ -1,5 +1,6 @@
 import { Router } from "express";
 import Leads from '../models/Lead'
+import { createNotification } from "./notificationRoutes";
 const router = Router();
 
 
@@ -8,6 +9,7 @@ router.post('/', async (req, res) => {
     try {
       const lead = new Leads(req.body);
       await lead.save();
+      await createNotification(lead, 'New_lead');
       res.status(201).json(lead);
     } catch (error) {
       res.status(400).json({ error: error.message });

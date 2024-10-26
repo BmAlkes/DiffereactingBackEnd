@@ -11,6 +11,7 @@ const clientProject_1 = __importDefault(require("./routes/clientProject"));
 const authRoute_1 = __importDefault(require("./routes/authRoute"));
 const postsRoutes_1 = __importDefault(require("./routes/postsRoutes"));
 const leadRoute_1 = __importDefault(require("./routes/leadRoute"));
+const notificationRoutes_1 = __importDefault(require("./routes/notificationRoutes"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const path_1 = __importDefault(require("path"));
@@ -35,5 +36,6 @@ app.use("/api/projects", express_1.default.static(path_1.default.join(__dirname,
 app.use("/api/client", clientProject_1.default);
 app.use("/api/posts", express_1.default.static(path_1.default.join(__dirname, "uploads")), postsRoutes_1.default);
 app.use("/api/leads", leadRoute_1.default);
+app.use("/api/notifications", notificationRoutes_1.default);
 exports.default = app;
 //# sourceMappingURL=server.js.map

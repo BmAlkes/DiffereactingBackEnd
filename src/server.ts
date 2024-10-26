@@ -6,6 +6,7 @@ import clientRoutes from "./routes/clientProject";
 import authRoutes from "./routes/authRoute";
 import postRoutes from "./routes/postsRoutes";
 import leadRoutes from './routes/leadRoute'
+import notificationsRoutes from './routes/notificationRoutes'
 import cors from "cors";
 import morgan from "morgan";
 import path from "path";
@@ -45,6 +46,7 @@ app.use(
   postRoutes
 );
 app.use("/api/leads",leadRoutes)
+app.use("/api/notifications",notificationsRoutes)
 
 
 export default app;
