@@ -22,6 +22,7 @@ router.post(
   ProjectController.createProject
 );
 router.get("/", ProjectController.getAllProjects);
+router.get("/all", ProjectController.getAllProjectsWithoutPagination);
 
 router.get(
   "/:id",
