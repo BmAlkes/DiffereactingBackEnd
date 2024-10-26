@@ -32,6 +32,16 @@ class ProjectController {
             res.status(500).send("Server error");
         }
     };
+    static getAllProjectsWithoutPagination = async (req, res) => {
+        try {
+            const projects = await Project_1.default.find();
+            res.json(projects);
+        }
+        catch (error) {
+            console.log(error);
+            res.status(500).send("Server error");
+        }
+    };
     static getProjectById = async (req, res) => {
         const { id } = req.params;
         try {

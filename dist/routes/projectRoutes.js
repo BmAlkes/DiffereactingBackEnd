@@ -14,6 +14,7 @@ const router = (0, express_1.Router)();
 router.use(auth_1.authetication);
 router.post("/", (0, express_validator_1.body)("projectName").notEmpty().withMessage("Project name is required"), (0, express_validator_1.body)("clientName").notEmpty().withMessage("Client name is required"), (0, express_validator_1.body)("description").notEmpty().withMessage("Description is required"), validation_1.handleInputErros, ProjectController_1.ProjectController.createProject);
 router.get("/", ProjectController_1.ProjectController.getAllProjects);
+router.get("/all", ProjectController_1.ProjectController.getAllProjectsWithoutPagination);
 router.get("/:id", (0, express_validator_1.param)("id").isMongoId().withMessage("ID not valid"), validation_1.handleInputErros, ProjectController_1.ProjectController.getProjectById);
 router.put("/:id", (0, express_validator_1.param)("id").isMongoId().withMessage("ID not valid"), (0, express_validator_1.body)("projectName").notEmpty().withMessage("Project name is required"), (0, express_validator_1.body)("clientName").notEmpty().withMessage("Client name is required"), (0, express_validator_1.body)("description").notEmpty().withMessage("Description is required"), validation_1.handleInputErros, ProjectController_1.ProjectController.updatedProject);
 router.delete("/:id", ProjectController_1.ProjectController.deleteProject);
