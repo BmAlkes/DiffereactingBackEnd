@@ -5,9 +5,11 @@ import User from "../models/User";
 
 export class ProjectController {
   static getAllProjects = async (req: Request, res: Response) => {
-    const PAGE_SIZE = 6;
+
     try {
-      const { page } = req.query;
+      const  page  = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
       const projects = await Project.find(
         {
           $or: [
@@ -17,14 +19,17 @@ export class ProjectController {
         },
         null,
         {
-          skip: Number(page) * PAGE_SIZE,
-          limit: PAGE_SIZE,
+          skip,
+          limit,
         }
       ).sort();
-      const totalPage = Math.floor(projects.length / PAGE_SIZE);
+      const totalItems = await Project.countDocuments();
+    const totalPages = Math.ceil(totalItems / limit);
       res.json({
-        totalPage,
-        data: projects,
+        projects,
+        currentPage: page,
+        totalPages,
+        totalItems
       });
     } catch (error) {
       console.log(error);

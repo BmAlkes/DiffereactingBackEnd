@@ -9,22 +9,26 @@ const Notification_1 = __importDefault(require("../models/Notification"));
 const User_1 = __importDefault(require("../models/User"));
 class ProjectController {
     static getAllProjects = async (req, res) => {
-        const PAGE_SIZE = 6;
         try {
-            const { page } = req.query;
+            const page = Number(req.query.page) || 1;
+            const limit = Number(req.query.limit) || 10;
+            const skip = (page - 1) * limit;
             const projects = await Project_1.default.find({
                 $or: [
                     { manager: { $in: req.user.id } },
                     { team: { $in: req.user.id } },
                 ],
             }, null, {
-                skip: Number(page) * PAGE_SIZE,
-                limit: PAGE_SIZE,
+                skip,
+                limit,
             }).sort();
-            const totalPage = Math.floor(projects.length / PAGE_SIZE);
+            const totalItems = await Project_1.default.countDocuments();
+            const totalPages = Math.ceil(totalItems / limit);
             res.json({
-                totalPage,
-                data: projects,
+                projects,
+                currentPage: page,
+                totalPages,
+                totalItems
             });
         }
         catch (error) {
