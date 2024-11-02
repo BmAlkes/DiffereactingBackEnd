@@ -85,7 +85,7 @@ export class PostsController {
 
   static updatedPost = async (req: Request, res: Response) => {
     const { id } = req.params;
-    console.log(id);
+
 
     try {
       const post = await Posts.findByIdAndUpdate(id, req.body);
@@ -93,7 +93,28 @@ export class PostsController {
         const error = new Error("Post not Found ");
         return res.status(404).json({ error: error.message });
       }
-
+      let fileData = {};
+      if (req.file) {
+        //save image to cloudinary
+        let uploadedFile;
+        try {
+          uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+            folder: "Differeacting",
+            resource_type: "image",
+          });
+        } catch (e) {
+          res.status(500);
+          throw new Error(e.message);
+        }
+        fileData = {
+          name: req.file.originalname,
+          filePath: uploadedFile.secure_url,
+          type: req.file.mimetype,
+          size: fileSizeFormatter(req.file.size, 2),
+        };
+      }
+      post.image = fileData;
+      post.save()
       res.send("Post updated successfully");
     } catch (error) {
       console.log(error);
