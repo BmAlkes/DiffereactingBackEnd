@@ -14,6 +14,6 @@ router.post(
 router.get("/", PostsController.getAllPosts);
 router.delete("/:postId", PostsController.deletePost);
 router.get("/:id", PostsController.getPostById);
-router.put("/:id", PostsController.updatedPost);
+router.put("/:id", upload.single("image"), PostsController.updatedPost);
 
 export default router;
