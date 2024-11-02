@@ -9,6 +9,6 @@ router.post("/", fileUpload_1.upload.single("image"), validation_1.handleInputEr
 router.get("/", PostsController_1.PostsController.getAllPosts);
 router.delete("/:postId", PostsController_1.PostsController.deletePost);
 router.get("/:id", PostsController_1.PostsController.getPostById);
-router.put("/:id", PostsController_1.PostsController.updatedPost);
+router.put("/:id", fileUpload_1.upload.single("image"), PostsController_1.PostsController.updatedPost);
 exports.default = router;
 //# sourceMappingURL=postsRoutes.js.map

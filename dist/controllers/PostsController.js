@@ -83,19 +83,68 @@ class PostsController {
         }
     };
     static updatedPost = async (req, res) => {
-        const { id } = req.params;
-        console.log(id);
         try {
-            const post = await Posts_1.Posts.findByIdAndUpdate(id, req.body);
+            const { id } = req.params;
+            const { title, content, summary } = req.body;
+            // Especifique o tipo do post
+            const post = await Posts_1.Posts.findById(id);
             if (!post) {
-                const error = new Error("Post not Found ");
-                return res.status(404).json({ error: error.message });
+                return res.status(404).json({ error: "Post not found" });
             }
-            res.send("Post updated successfully");
+            // Prepara o objeto de atualização
+            const updateData = {
+                title,
+                content,
+                summary,
+            };
+            // Se houver um arquivo novo, faz o upload para o Cloudinary
+            if (req.file) {
+                try {
+                    // Se já existe uma imagem antiga, deleta do Cloudinary
+                    if (post.image?.filePath) {
+                        const publicId = post.image.filePath.split('/').pop()?.split('.')[0];
+                        if (publicId) {
+                            await cloudinary.uploader.destroy(`Differeacting/${publicId}`);
+                        }
+                    }
+                    // Upload da nova imagem
+                    const uploadedFile = await cloudinary.uploader.upload(req.file.path, {
+                        folder: "Differeacting",
+                        resource_type: "image",
+                    });
+                    // Prepara os dados do arquivo
+                    const fileData = {
+                        name: req.file.originalname,
+                        filePath: uploadedFile.secure_url,
+                        type: req.file.mimetype,
+                        size: (0, fileUpload_1.fileSizeFormatter)(req.file.size, 2),
+                    };
+                    // Adiciona a nova imagem aos dados de atualização
+                    updateData.image = fileData;
+                }
+                catch (error) {
+                    return res.status(500).json({
+                        error: "Error uploading image",
+                        details: error.message
+                    });
+                }
+            }
+            // Atualiza o post com os novos dados
+            const updatedPost = await Posts_1.Posts.findByIdAndUpdate(id, { $set: updateData }, { new: true }).lean();
+            if (!updatedPost) {
+                return res.status(404).json({ error: "Failed to update post" });
+            }
+            return res.status(200).json({
+                message: "Post updated successfully",
+                post: updatedPost
+            });
         }
         catch (error) {
-            console.log(error);
-            res.status(500).send("Server error");
+            console.error("Error updating post:", error);
+            return res.status(500).json({
+                error: "Server error",
+                details: error.message
+            });
         }
     };
 }
