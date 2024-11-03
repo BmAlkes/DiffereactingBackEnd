@@ -25,13 +25,21 @@
 /// <reference types="mongoose/types/inferrawdoctype" />
 import mongoose, { Document, PopulatedDoc } from "mongoose";
 import { IUser } from "./User";
-export interface Ipost extends Document {
+export interface FileData {
+    name: string;
+    filePath: string;
+    type: string;
+    size: string;
+}
+export interface IPost extends Document {
     title: string;
     content: string;
-    summery: string;
+    summary: string;
     author: PopulatedDoc<IUser & Document>;
-    image: object;
+    image: FileData | null;
+    terms: string[];
+    readTime: number;
 }
-export declare const Posts: mongoose.Model<Ipost, {}, {}, {}, mongoose.Document<unknown, {}, Ipost> & Ipost & Required<{
+export declare const Post: mongoose.Model<IPost, {}, {}, {}, mongoose.Document<unknown, {}, IPost> & IPost & Required<{
     _id: unknown;
 }>, any>;

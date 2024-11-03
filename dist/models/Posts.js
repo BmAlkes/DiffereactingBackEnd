@@ -23,8 +23,16 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Posts = void 0;
+exports.Post = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
+// File data schema
+const FileDataSchema = new mongoose_1.Schema({
+    name: String,
+    filePath: String,
+    type: String,
+    size: String
+});
+// Updated Post Schema
 const PostSchema = new mongoose_1.Schema({
     title: {
         type: String,
@@ -43,13 +51,21 @@ const PostSchema = new mongoose_1.Schema({
         type: String,
     },
     image: {
-        type: Object,
+        type: FileDataSchema,
         default: null
+    },
+    terms: [{
+            type: String,
+            trim: true
+        }],
+    readTime: {
+        type: Number,
+        default: 5
     },
     createdAt: {
         type: Date,
         default: Date.now,
     },
 });
-exports.Posts = mongoose_1.default.model("Post", PostSchema);
+exports.Post = mongoose_1.default.model("Post", PostSchema);
 //# sourceMappingURL=Posts.js.map

@@ -17,6 +17,7 @@ const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
 const path_1 = __importDefault(require("path"));
 const body_parser_1 = __importDefault(require("body-parser"));
+const axios_1 = __importDefault(require("axios"));
 dotenv_1.default.config();
 (0, mongoose_database_1.connectToDatabase)();
 const app = (0, express_1.default)();
@@ -39,5 +40,12 @@ app.use("/api/posts", express_1.default.static(path_1.default.join(__dirname, "u
 app.use("/api/leads", leadRoute_1.default);
 app.use("/api/notifications", notificationRoutes_1.default);
 app.use("/api/transactions", transactions_1.default);
+const vercelApi = axios_1.default.create({
+    baseURL: 'https://api.vercel.com',
+    headers: {
+        'Authorization': `Bearer ${process.env.VERCEL_ANALYTICS_TOKEN}`,
+        'Content-Type': 'application/json'
+    }
+});
 exports.default = app;
 //# sourceMappingURL=server.js.map

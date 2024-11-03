@@ -6,12 +6,14 @@ import clientRoutes from "./routes/clientProject";
 import authRoutes from "./routes/authRoute";
 import postRoutes from "./routes/postsRoutes";
 import leadRoutes from './routes/leadRoute'
+
 import notificationsRoutes from './routes/notificationRoutes'
 import transactions from './routes/transactions'
 import cors from "cors";
 import morgan from "morgan";
 import path from "path";
 import bodyParser from "body-parser";
+import axios from "axios";
 
 dotenv.config();
 connectToDatabase();
@@ -49,6 +51,15 @@ app.use(
 app.use("/api/leads",leadRoutes)
 app.use("/api/notifications",notificationsRoutes)
 app.use("/api/transactions", transactions)
+
+const vercelApi = axios.create({
+  baseURL: 'https://api.vercel.com',
+  headers: {
+    'Authorization': `Bearer ${process.env.VERCEL_ANALYTICS_TOKEN}`,
+    'Content-Type': 'application/json'
+  }
+});
+
 
 
 export default app;
