@@ -6,6 +6,7 @@ import clientRoutes from "./routes/clientProject";
 import authRoutes from "./routes/authRoute";
 import postRoutes from "./routes/postsRoutes";
 import leadRoutes from './routes/leadRoute'
+import event from './routes/eventsRoute'
 
 import notificationsRoutes from './routes/notificationRoutes'
 import transactions from './routes/transactions'
@@ -51,14 +52,8 @@ app.use(
 app.use("/api/leads",leadRoutes)
 app.use("/api/notifications",notificationsRoutes)
 app.use("/api/transactions", transactions)
+app.use("/api/events", event)
 
-const vercelApi = axios.create({
-  baseURL: 'https://api.vercel.com',
-  headers: {
-    'Authorization': `Bearer ${process.env.VERCEL_ANALYTICS_TOKEN}`,
-    'Content-Type': 'application/json'
-  }
-});
 
 
 

@@ -111,13 +111,9 @@ export class ProjectController {
 
     const user = await User.findById(req.user.id);
     try {
-      notification.create({
-        userId: req.user.id,
-        projectId: project.id,
-        message: `New Project created by ${user.name}`,
-      });
+    
       //  
-      await project.save();
+  await project.save();
       res.send("Project Created Successfully");
     } catch (error) {
       console.log(error);

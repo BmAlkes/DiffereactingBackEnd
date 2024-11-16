@@ -115,15 +115,27 @@ router.post(
 
 // Routes for Team
 
-router.post('/:projectId/team/find',body("email").isEmail().toLowerCase().withMessage("Email is not valid"),handleInputErros, TeamMemberController.findMemberByEmail)
+router.post(
+  "/:projectId/team/find",
+  body("email").isEmail().toLowerCase().withMessage("Email is not valid"),
+  handleInputErros,
+  TeamMemberController.findMemberByEmail
+);
 
-router.get('/:projectId/team', TeamMemberController.getProjectTeam)
+router.get("/:projectId/team", TeamMemberController.getProjectTeam);
 
+router.post(
+  "/:projectId/team",
+  body("id").isMongoId().withMessage("ID Not Valid"),
+  handleInputErros,
+  TeamMemberController.addMemberById
+);
 
-router.post('/:projectId/team',body('id').isMongoId().withMessage("ID Not Valid"), handleInputErros, TeamMemberController.addMemberById)
-
-router.delete('/:projectId/team/:userId',param('userId').isMongoId().withMessage("ID Not Valid"), handleInputErros, TeamMemberController.removeMemberById)
-
-
+router.delete(
+  "/:projectId/team/:userId",
+  param("userId").isMongoId().withMessage("ID Not Valid"),
+  handleInputErros,
+  TeamMemberController.removeMemberById
+);
 
 export default router;

@@ -1,43 +1,49 @@
-import mongoose, { Schema, Types } from "mongoose";
+// models/Notification.ts
+import mongoose, { Schema, Document } from "mongoose";
 
-export interface INotification {
-  type: [string];
-  leadId: Types.ObjectId;
+export interface INotification extends Document {
+  userId: mongoose.Types.ObjectId;
+  projectId?: mongoose.Types.ObjectId;
+  leadId?: mongoose.Types.ObjectId;
+  message: string;
+  type: string;
   read: boolean;
-  createDate: string;
 }
 
-const notificationSchema = new Schema(
+const NotificationSchema: Schema = new Schema(
   {
-    type: {
-      type: String,
-      enum: ['New_lead', 'lead_updated'],
-      required: true
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    projectId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
     },
     leadId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Leads',
-      required: true
+      ref: "Lead",
+    },
+    message: {
+      type: String,
+      required: true,
+    },
+    type: {
+      type: String,
+      required: true,
+      enum: ["project", "lead", "task", "other"],
     },
     read: {
       type: Boolean,
-      default: false
+      default: false,
     },
-   createDate: {
-      type: Date,
-      default: Date.now
-    },
-    expiresAt:{
-      type:Date,
-      default:Date.now(),
-      expires:"24h"
-  }
+  },
+  {
+    timestamps: true,
   }
 );
 
-const Notification = mongoose.model<INotification>(
-  "Notification",
-  notificationSchema
-);
+const Notification = mongoose.model<INotification>("Notification", NotificationSchema);
 
 export default Notification;
