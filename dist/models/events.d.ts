@@ -23,16 +23,20 @@
 /// <reference types="mongoose/types/virtuals" />
 /// <reference types="mongoose/types/inferschematype" />
 /// <reference types="mongoose/types/inferrawdoctype" />
-import mongoose, { Document } from "mongoose";
-export interface INotification extends Document {
-    userId: mongoose.Types.ObjectId;
-    projectId?: mongoose.Types.ObjectId;
-    leadId?: mongoose.Types.ObjectId;
-    message: string;
-    type: string;
-    read: boolean;
+import mongoose, { Document } from 'mongoose';
+export interface IEvent extends Document {
+    user: mongoose.Types.ObjectId | string;
+    title: string;
+    date: Date;
+    description?: string;
+    category: 'Work' | 'Personal' | 'Important' | 'Meeting' | 'Others';
+    reminder: boolean;
+    reminderTime: string;
+    notified: boolean;
+    createdAt: Date;
+    updatedAt: Date;
 }
-declare const Notification: mongoose.Model<INotification, {}, {}, {}, mongoose.Document<unknown, {}, INotification> & INotification & Required<{
+declare const _default: mongoose.Model<IEvent, {}, {}, {}, mongoose.Document<unknown, {}, IEvent> & IEvent & Required<{
     _id: unknown;
 }>, any>;
-export default Notification;
+export default _default;

@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProjectController = void 0;
 const Project_1 = __importDefault(require("../models/Project"));
-const Notification_1 = __importDefault(require("../models/Notification"));
 const User_1 = __importDefault(require("../models/User"));
 class ProjectController {
     static getAllProjects = async (req, res) => {
@@ -104,11 +103,6 @@ class ProjectController {
         project.manager = req.user.id;
         const user = await User_1.default.findById(req.user.id);
         try {
-            Notification_1.default.create({
-                userId: req.user.id,
-                projectId: project.id,
-                message: `New Project created by ${user.name}`,
-            });
             //  
             await project.save();
             res.send("Project Created Successfully");

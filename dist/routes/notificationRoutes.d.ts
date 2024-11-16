@@ -25,7 +25,7 @@
 /// <reference types="mongoose/types/inferschematype" />
 /// <reference types="mongoose/types/inferrawdoctype" />
 declare const router: import("express-serve-static-core").Router;
-export declare const createNotification: (lead: any, type: any) => Promise<import("mongoose").Document<unknown, {}, import("../models/Notification").INotification> & import("../models/Notification").INotification & {
-    _id: import("mongoose").Types.ObjectId;
-}>;
+export declare const createNotification: (lead: any, type: any) => Promise<import("mongoose").Document<unknown, {}, import("../models/Notification").INotification> & import("../models/Notification").INotification & Required<{
+    _id: unknown;
+}>>;
 export default router;

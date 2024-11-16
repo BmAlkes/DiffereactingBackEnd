@@ -23,38 +23,42 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// models/Notification.ts
+// models/events.ts
 const mongoose_1 = __importStar(require("mongoose"));
-const NotificationSchema = new mongoose_1.Schema({
-    userId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
+const eventSchema = new mongoose_1.Schema({
+    user: {
+        type: mongoose_1.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
-    projectId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "Project",
-    },
-    leadId: {
-        type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: "Lead",
-    },
-    message: {
+    title: {
         type: String,
-        required: true,
+        required: true
     },
-    type: {
+    date: {
+        type: Date,
+        required: true
+    },
+    description: String,
+    category: {
         type: String,
-        required: true,
-        enum: ["project", "lead", "task", "other"],
+        enum: ['Work', 'Personal', 'Important', 'Meeting', 'Others'],
+        default: 'Others'
     },
-    read: {
+    reminder: {
         type: Boolean,
-        default: false,
+        default: false
     },
+    reminderTime: {
+        type: String,
+        default: '30'
+    },
+    notified: {
+        type: Boolean,
+        default: false
+    }
 }, {
-    timestamps: true,
+    timestamps: true
 });
-const Notification = mongoose_1.default.model("Notification", NotificationSchema);
-exports.default = Notification;
-//# sourceMappingURL=Notification.js.map
+exports.default = mongoose_1.default.model('Event', eventSchema);
+//# sourceMappingURL=events.js.map
