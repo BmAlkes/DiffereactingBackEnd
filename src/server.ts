@@ -5,11 +5,11 @@ import projectRoutes from "./routes/projectRoutes";
 import clientRoutes from "./routes/clientProject";
 import authRoutes from "./routes/authRoute";
 import postRoutes from "./routes/postsRoutes";
-import leadRoutes from './routes/leadRoute'
-import event from './routes/eventsRoute'
+import leadRoutes from "./routes/leadRoute";
+import event from "./routes/eventsRoute";
 
-import notificationsRoutes from './routes/notificationRoutes'
-import transactions from './routes/transactions'
+import notificationsRoutes from "./routes/notificationRoutes";
+import transactions from "./routes/transactions";
 import cors from "cors";
 import morgan from "morgan";
 import path from "path";
@@ -49,12 +49,9 @@ app.use(
   express.static(path.join(__dirname, "uploads")),
   postRoutes
 );
-app.use("/api/leads",leadRoutes)
-app.use("/api/notifications",notificationsRoutes)
-app.use("/api/transactions", transactions)
-app.use("/api/events", event)
-
-
-
+app.use("/api/leads", leadRoutes);
+app.use("/api/notifications", notificationsRoutes);
+app.use("/api/transactions", transactions);
+app.use("/api/events", event);
 
 export default app;
